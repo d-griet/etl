@@ -247,9 +247,11 @@ namespace etl
       else // read_index > write_index
       {
         // Doesn't fit
-        if ((write_index + *psize) >= read_index)
-        {
+        if ((write_index + *psize) >= read_index || (read_index - write_index - 1) >= fallback_size) {
           *psize = read_index - write_index - 1;
+        } else {
+          *psize = 0;
+          return 0;
         }
 
         return write_index;
